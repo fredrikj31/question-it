@@ -1,0 +1,19 @@
+services:
+  database:
+    container_name: question-it-database
+    image: "postgres:16-alpine"
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - database-data:/var/lib/postgresql/data # store data from postgresql in the volume
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql # init database with SQL files from local "database" folder
+
+volumes:
+  database-data:
+    name: question-it-database-data
+    driver: local
